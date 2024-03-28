@@ -1,0 +1,133 @@
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Book {
+private:
+    string title;
+    string author;
+    double price;
+    int quantity;
+
+public:
+    Book(string title, string author, double price, int quantity) : title(title), author(author), price(price), quantity(quantity) {}
+
+    string getTitle() const {
+        return title;
+    }
+
+    string getAuthor() const {
+        return author;
+    }
+
+    double getPrice() const {
+        return price;
+    }
+
+    int getQuantity() const {
+        return quantity;
+    }
+
+    void decreaseQuantity(int amount) {
+        quantity -= amount;
+    }
+
+    void increaseQuantity(int amount) {
+        quantity += amount;
+    }
+};
+
+class ShoppingCart {
+private:
+    vector<Book*> cart;
+
+public:
+    void addBookToCart(Book* book) {
+        cart.push_back(book);
+    }
+
+    void viewCartContents() {
+        cout << "Your Shopping Cart:" << endl;
+        for (auto book : cart) {
+            cout << "Title: " << book->getTitle() << ", Author: " << book->getAuthor() << ", Price: $" << book->getPrice() << endl;
+        }
+    }
+
+    double calculateTotalPrice() {
+        double total = 0.0;
+        for (auto book : cart) {
+            total += book->getPrice();
+        }
+        return total;
+    }
+
+    void checkout() {
+        cout << "Total Price: $" << calculateTotalPrice() << endl;
+        // Implement payment and inventory management here
+        // For simplicity, let's just clear the cart in this example
+        cart.clear();
+        cout << "Thank you for shopping with us!" << endl;
+    }
+};
+
+int main() {
+    Book book1("The Great Gatsby", "By Hafiz Muhammad ", 12.99, 5);
+    Book book2("To Kill a Mockingbird", "By Great Daniyal ", 9.99, 8);
+    Book book3("1984", " sir tayyab", 10.49, 3);
+    Book Book4("2024", " The Tam Man", 11.65, 5);
+    
+    ShoppingCart cart;
+
+    int choice;
+    do {
+        cout << "\n1. Add book to cart\n2. View cart contents\n3. Proceed to checkout\n4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            int bookChoice;
+            cout << "\nChoose a book to add to your cart:" << endl;
+            cout << "1. " << book1.getTitle() << endl;
+            cout << "2. " << book2.getTitle() << endl;
+            cout << "3. " << book3.getTitle() << endl;
+            cout << "Enter your choice: ";
+            cin >> bookChoice;
+
+            Book* selectedBook;
+            switch (bookChoice) {
+        case 1:
+                selectedBook = &book1;
+                break;
+        case 2:
+                selectedBook = &book2;
+                break;
+        case 3:
+                selectedBook = &book3;
+                break;
+        default:
+                cout << "Invalid choice!" << endl;
+                continue;
+            }
+            cart.addBookToCart(selectedBook);
+            cout << "Book added to cart." << endl;
+            break;
+        case 2:
+            cart.viewCartContents();
+            break;
+        case 3:
+            cart.checkout();
+            break;
+        case 4:
+            cout << "Exiting..." << endl;
+            break;
+        default:
+            cout << "Invalid choice!" << endl;
+        }
+    } while (choice != 4);
+
+    return 0;
+}
